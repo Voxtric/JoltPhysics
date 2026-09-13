@@ -46,7 +46,7 @@ OctreeShape::OctreeShape(const OctreeShapeSettings &inSettings, ShapeResult &out
 
 AABox OctreeShape::GetLocalBounds() const
 {
-	const Vec3 halfSize = Vec3::sReplicate(mEndLeafSize * MAX_OCTREE_NODE_LEVEL_SIZE * 0.5f);
+	const Vec3 halfSize = Vec3::sReplicate(mEndLeafSize * MAX_OCTREE_NODE_LEVEL_DIMENSION_SIZE * 0.5f);
 	return AABox(-halfSize, halfSize);
 }
 

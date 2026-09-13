@@ -1,10 +1,13 @@
 #pragma once
 
+#include <intrin.h>
+
 #include <Jolt/Physics/Collision/Shape/Shape.h>
 #include <Jolt/Physics/PhysicsSettings.h>
 
 static constexpr size_t MAX_OCTREE_NODE_LEVEL = 3; // 16x16x16
-static constexpr float MAX_OCTREE_NODE_LEVEL_SIZE = static_cast<float>(2 << MAX_OCTREE_NODE_LEVEL);
+static constexpr size_t MAX_OCTREE_NODE_LEVEL_DIMENSION_ELEMENTS = (2 << MAX_OCTREE_NODE_LEVEL);
+static constexpr float MAX_OCTREE_NODE_LEVEL_DIMENSION_SIZE = static_cast<float>(MAX_OCTREE_NODE_LEVEL_DIMENSION_ELEMENTS);
 
 JPH_NAMESPACE_BEGIN
 
@@ -35,7 +38,10 @@ public:
 	virtual AABox			GetLocalBounds() const override;
 
 	// See Shape::GetInnerRadius
-	virtual float			GetInnerRadius() const override								{ return mEndLeafSize * 0.5f; }
+	virtual float			GetInnerRadius() const override					{ return mEndLeafSize * 0.5f; }
+
+	// See Shape::GetSubShapeIDBitsRecursive
+	virtual uint			GetSubShapeIDBitsRecursive() const override		{ static_cast<uint>(__popcntd(MAX_OCTREE_NODE_LEVEL_DIMENSION_ELEMENTS * MAX_OCTREE_NODE_LEVEL_DIMENSION_ELEMENTS * MAX_OCTREE_NODE_LEVEL_DIMENSION_ELEMENTS) - 1); }
 
 private:
 	float					mEndLeafSize = 0.0f;
